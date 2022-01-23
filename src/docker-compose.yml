@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  app:
+    image: ${DOCKER_REGISTRY-}app
+    build:
+      context: .
+      dockerfile: DynamicSearchWithQueryable/Dockerfile
+    ports: 
+        - "5001:443"
+        - "5000:80"
+    environment:
+      ConnectionStrings__DefaultConnection: 'Server=db;Database=DynamicSearchDb;User Id=sa;Password=Pass@Test;'
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_Kestrel__Certificates__Default__Password: myPass*123
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on: 
+        - db
+
+  db:
+    image: 'mcr.microsoft.com/mssql/server:2019-CU14-ubuntu-20.04'
+    ports: 
+        - '1433:1433'
+    container_name: ${DOCKER_REGISTRY-}db
+    environment:
+        ACCEPT_EULA: 'Y'
+        SA_PASSWORD: 'Pass@Test'

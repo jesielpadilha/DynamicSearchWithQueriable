@@ -1,0 +1,7 @@
+.vscode
+.vs
+src/DynamicSearchWithQueryable/.vs
+src/DynamicSearchWithQueryable/obj
+src/DynamicSearchWithQueryable/bin
+*.exe
+*.dll
